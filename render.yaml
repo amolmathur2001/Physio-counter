@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: physio-counter
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      # Secrets: Render asks for these values when you create the service.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: APP_ACCESS_CODE
+        sync: false

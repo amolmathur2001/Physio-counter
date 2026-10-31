@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>Physio Counter</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1 id="routineTitle">Physio Counter</h1>
+    <button id="micBtn" class="mic" type="button" aria-pressed="false" title="Hands-free voice commands">🎙️ Hands-free</button>
+  </header>
+
+  <main>
+    <section class="counter" aria-live="polite">
+      <div id="phase" class="phase">Ready</div>
+      <div id="bigNumber" class="big">0</div>
+      <div id="progressText" class="sub">of 10</div>
+      <div class="bar"><div id="barFill"></div></div>
+      <div id="voiceStatus" class="voice-status"></div>
+    </section>
+
+    <section class="controls">
+      <button id="restartBtn" type="button" class="btn secondary">↺ Restart</button>
+      <button id="mainBtn" type="button" class="btn primary">▶ Start</button>
+      <button id="stopBtn" type="button" class="btn secondary">■ Stop</button>
+    </section>
+    <div class="controls-2">
+      <button id="nextSetBtn" type="button" class="btn small" hidden>Next set ⏭</button>
+      <button id="skipRestBtn" type="button" class="btn small" hidden>Skip rest ⏭</button>
+    </div>
+
+    <details class="card" open>
+      <summary>Exercise settings</summary>
+      <form id="settings" class="grid">
+        <label class="full">Exercise name<input name="name" type="text" value="Straight leg raise"></label>
+        <label>Target count<input name="reps" type="number" min="1" max="200" value="10" inputmode="numeric"></label>
+        <label>Seconds per count<input name="count_seconds" type="number" min="0.5" max="20" step="0.5" value="2" inputmode="decimal"></label>
+        <label>Hold (seconds)<input name="hold_seconds" type="number" min="0" max="120" step="1" value="0" inputmode="numeric"></label>
+        <label>Sets<input name="sets" type="number" min="1" max="20" value="1" inputmode="numeric"></label>
+        <label>Rest between sets (s)<input name="rest_seconds" type="number" min="0" max="600" step="5" value="30" inputmode="numeric"></label>
+        <label>Voice speed<input name="rate" type="range" min="0.6" max="1.6" step="0.1" value="1"></label>
+        <label class="full check"><input name="count_hold" type="checkbox"> Count the hold seconds out loud</label>
+        <label class="full">Custom words at specific counts <small>(one per line, e.g. <code>5: halfway</code>)</small>
+          <textarea name="cues" rows="3" placeholder="5: halfway there&#10;9: one more after this&#10;10: last one, slowly down"></textarea>
+        </label>
+        <p class="hint full">With a hold, each rep goes: <b>count → hold → relax</b>.</p>
+        <button id="saveBtn" type="button" class="btn small full">💾 Save as routine</button>
+      </form>
+    </details>
+
+    <details class="card">
+      <summary>Saved routines</summary>
+      <ul id="savedList" class="saved"></ul>
+      <p id="savedEmpty" class="hint">No saved routines yet.</p>
+    </details>
+
+    <details class="card">
+      <summary>✨ Import from physio prescription</summary>
+      <form id="rxForm" class="rx">
+        <label>Type or paste what your physio wrote
+          <textarea name="text" rows="3" placeholder="SLR R leg 3x10 hold 5s. Quad sets 2x15, rest 30s between sets."></textarea>
+        </label>
+        <label class="file">…or add a photo of the exercise sheet
+          <input name="image" type="file" accept="image/*" capture="environment">
+        </label>
+        <button type="submit" class="btn primary small">Read with AI</button>
+        <p id="rxStatus" class="hint" role="status"></p>
+      </form>
+      <div id="rxResults"></div>
+    </details>
+
+    <details class="card">
+      <summary>Voice commands</summary>
+      <p class="hint">Tap <b>Hands-free</b>, then say: <b>stop</b> / <b>pause</b>, <b>continue</b>, <b>again</b> (start over),
+        <b>next set</b>, <b>skip rest</b>, <b>slower</b>, <b>faster</b>. Anything else (like <i>"make it 12 reps"</i> or
+        <i>"where am I?"</i>) is understood by AI when online.</p>
+    </details>
+
+    <p class="disclaimer">Follow your physiotherapist's plan. Stop if you feel pain and check with them.</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
